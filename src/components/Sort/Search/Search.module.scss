@@ -1,0 +1,39 @@
+@import url(https://fonts.googleapis.com/css?family=Exo+2:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+
+
+.form{
+  position: relative;
+  margin-bottom: 50px;
+}
+.input{
+  width: 100%;
+  height: 70px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 3px 5px 4px #eeeff1;
+  font-family: "Exo 2";
+  padding: 0 30px;
+  font-size: 18px;
+  color:#050f28;
+  font-weight: 600;
+  &::placeholder{
+    color: rgb(153, 153, 153);
+  }
+}
+.button{
+  background: #ff554e;
+  box-shadow: 3px 3px 5px  rgba(250, 113, 108, 0.6);
+  height: 35px;
+  width: 35px;
+  border-radius: 8px;
+  position: absolute;
+  right: 17.5px;
+  top: 17.5px;
+  > svg{
+    position: absolute;
+    top: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 35px;
+    height: 35px;
+  }
+}

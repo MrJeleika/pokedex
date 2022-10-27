@@ -1,0 +1,10 @@
+.preloader{
+  position: absolute;
+
+  top: calc(50% - 25px);
+  left:calc(50% - 25px);
+  > svg{
+    height: 50px;
+    width: 50px;
+  }
+}
