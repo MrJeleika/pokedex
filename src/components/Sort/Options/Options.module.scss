@@ -1,0 +1,21 @@
+.label{
+  font-weight: 700;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.textField{
+  background: transparent;
+  border: 2px solid rgb(153, 153, 153);
+  padding: 10px;
+  border-radius: 10px;
+  width: 70px;
+  line-height: 1;
+  text-align: right;
+  font-weight: 600;
+  font-size: 14px;
+  margin-right: 10px;
+  transition: 0.3s ease-in;
+}
+.error{
+  border: 2px solid #ff554e;;
+}

@@ -13,8 +13,7 @@ export const APIgetPokemonNamesList = (from, to) => {
 };
 
 export const APIgetPokemonByName = (pokemon) => {
-  return instance.get(`pokemon/${pokemon}`).then((response, error) => {
-    if (error) return null;
+  return instance.get(`pokemon/${pokemon}`).then((response) => {
     return response.data;
   });
 };

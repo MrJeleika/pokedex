@@ -5,17 +5,22 @@ import s from './Search.module.scss';
 //Misc
 import { PokeballSVG } from 'components/svgs/pokeball';
 export const Search = (props) => {
-  const { setPokemonList, searchPokemonByName } = props;
+  const { searchPokemonByName, setPokemonList } = props;
   return (
     <div>
       <Formik
         initialValues={{
           name: '',
         }}
-        onSubmit={(value) => {
+        onSubmit={(value, { resetForm }) => {
+          if (value.name === '') {
+            setPokemonList(0, 50);
+            return null;
+          }
           isFinite(+value.name)
             ? searchPokemonByName(+value.name)
             : searchPokemonByName(value.name.toLowerCase());
+          resetForm();
         }}
       >
         <Form className={s.form}>

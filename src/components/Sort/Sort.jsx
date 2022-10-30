@@ -1,4 +1,7 @@
+import { Flex } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
+// Components
+import { Options } from './Options/Options';
 import { Search } from './Search/Search';
 
 export const Sort = (props) => {
@@ -12,6 +15,7 @@ export const Sort = (props) => {
         setPokemonList={setPokemonListThunk}
         searchPokemonByName={searchPokemonByNameThunk}
       />
+      <Options setPokemonList={setPokemonListThunk} />
     </div>
   );
 };
