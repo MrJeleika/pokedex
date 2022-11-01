@@ -4,6 +4,7 @@ import s from './MainCard.module.scss';
 
 export const MainCard = (props) => {
   const { pokemon } = props;
+
   return (
     <div className={s.card}>
       <img className={s.img} src={pokemon.sprites.front_default} alt="" />

@@ -1,4 +1,3 @@
-import { Flex } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 // Components
 import { Options } from './Options/Options';

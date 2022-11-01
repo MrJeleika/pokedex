@@ -15,7 +15,7 @@ export const pokeReducer = (state = initialState, action) => {
     case SET_POKEMON_LIST:
       return {
         ...state,
-        pokemonList: [...state.pokemonList, action.pokemonList],
+        pokemonList: [...state.pokemonList, ...action.pokemonList],
       };
     case CLEAR_POKEMON_LIST:
       return {
@@ -49,11 +49,14 @@ export const setIsFetching = (isFetching) => ({
 export const setPokemonListThunk = (from, to) => {
   return async (dispatch) => {
     dispatch(setIsFetching(true));
+    dispatch(clearPokemonList());
     let response = await APIgetPokemonNamesList(from, to);
-    response.map(async (e) => {
-      dispatch(clearPokemonList());
-      dispatch(setPokemonList(await APIgetPokemonByName(e.name)));
-    });
+    const arr = await Promise.all(
+      response.map((e) => {
+        return APIgetPokemonByName(e.name);
+      }),
+    );
+    dispatch(setPokemonList(arr));
     dispatch(setIsFetching(false));
   };
 };
@@ -61,12 +64,12 @@ export const setPokemonListThunk = (from, to) => {
 export const searchPokemonByNameThunk = (name) => {
   return async (dispatch) => {
     dispatch(setIsFetching(true));
+    dispatch(clearPokemonList());
     try {
       let response = await APIgetPokemonByName(name);
-      dispatch(clearPokemonList());
-      dispatch(setPokemonList(response));
+      dispatch(setPokemonList([response]));
     } catch (error) {
-      // Clear pokemon list if not found
+      // Clear pokemon list on API error
       dispatch(clearPokemonList());
     }
     dispatch(setIsFetching(false));
