@@ -14,7 +14,7 @@ export const Sort = (props) => {
         setPokemonList={setPokemonListThunk}
         searchPokemonByName={searchPokemonByNameThunk}
       />
-      <Options setPokemonList={setPokemonListThunk} />
+      <Options setPokemonList={setPokemonListThunk} {...props} />
     </div>
   );
 };

@@ -3,6 +3,10 @@
   font-size: 16px;
   margin-right: 10px;
 }
+.form{
+  display: flex;
+  align-items: center;
+}
 .textField{
   background: transparent;
   border: 2px solid rgb(153, 153, 153);
@@ -18,4 +22,20 @@
 }
 .error{
   border: 2px solid #ff554e;;
+}
+.option{
+  > svg{
+    width: 32px;
+  }
+  &:hover{
+    background: #ff554e;
+  }
+}
+.icon{
+  position: absolute;
+}
+.select{
+  border: 2px solid rgb(153, 153, 153);
+  width: '200px';
+  display: inline-block;
 }
