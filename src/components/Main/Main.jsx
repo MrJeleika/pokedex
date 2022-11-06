@@ -5,6 +5,7 @@ import { MainCard } from './MainCard/MainCard';
 
 export const Main = (props) => {
   const { state } = props;
+  console.log(props);
   return (
     <div className="container">
       {state.isFetching ? <Preloader /> : null}
@@ -13,7 +14,18 @@ export const Main = (props) => {
           ? null
           : state.pokemonList
               // Sort pokemons by number
-              .sort((a, b) => a.id - b.id)
+              .filter((e) =>
+                e.weight / 10 >= state.minWeightFilter &&
+                e.weight / 10 < state.maxWeightFilter
+                  ? e
+                  : null,
+              )
+              .filter((e) =>
+                e.height >= state.minHeightFilter &&
+                e.height < state.maxHeightFilter
+                  ? e
+                  : null,
+              )
               .filter((e) => {
                 // if filter
                 if (state.typeFilter1 === 'all') {
@@ -63,6 +75,7 @@ export const Main = (props) => {
                 // default
                 return null;
               })
+              .sort((a, b) => a.id - b.id)
               .map((e, i) => {
                 return <MainCard pokemon={e} key={i} />;
               })}

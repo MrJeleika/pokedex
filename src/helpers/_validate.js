@@ -12,4 +12,7 @@ export const OptionsValidationSchema = Yup.object().shape({
     .positive()
     .integer()
     .lessThan(Yup.ref('to')),
+  type1: Yup.string(),
+  type2: Yup.string(),
+  weight: Yup.string(),
 });

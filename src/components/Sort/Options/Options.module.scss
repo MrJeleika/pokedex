@@ -1,7 +1,8 @@
 .label{
   font-weight: 700;
   font-size: 16px;
-  margin-right: 10px;
+  margin-left: 10px;
+  color:#050f28;
 }
 .form{
   display: flex;
@@ -17,25 +18,51 @@
   text-align: right;
   font-weight: 600;
   font-size: 14px;
-  margin-right: 10px;
+  margin-left: 10px;
   transition: 0.3s ease-in;
+  &:hover{
+    border: 2px solid rgb(112, 112, 112);
+  }
 }
 .error{
-  border: 2px solid #ff554e;;
+  border: 2px solid #ff554e !important;
 }
 .option{
-  > svg{
-    width: 32px;
-  }
-  &:hover{
-    background: #ff554e;
-  }
+  display: flex;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .icon{
   position: absolute;
 }
-.select{
-  border: 2px solid rgb(153, 153, 153);
-  width: '200px';
-  display: inline-block;
+.button{
+  width: 43px;
+  height: 43px;
+  margin-left: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  background: rgb(112, 112, 112);
+  align-items: center;
+  box-shadow: 0px 3px 5px 4px #eeeff1;  
+  >svg{
+    width: 26px;
+    height: 26px;
+    fill: white;
+
+  }
+
+}
+@media (min-width: 320px){
+  .option{
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (min-width: 768px){
+  .option{
+    width: 100%;
+    justify-content: right;
+  }
 }

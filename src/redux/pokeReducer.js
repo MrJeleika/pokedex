@@ -5,14 +5,20 @@ const CLEAR_POKEMON_LIST = 'CLEAR_POKEMON_LIST';
 const IS_FETCHING = 'IS_FETCHING';
 const SET_TYPEFILTER1 = 'SET_TYPEFILTER1';
 const SET_TYPEFILTER2 = 'SET_TYPEFILTER2';
+const SET_WEIGHTFILTER = 'SET_WEIGHTFILTER';
+const SET_HEIGHTFILTER = 'SET_HEIGHTFILTER';
 const CLEAR_SEARCHFILTER_LIST = 'CLEAR_SEARCHFILTER_LIST';
 
 let initialState = {
   pokemon: [],
   pokemonList: [],
   isFetching: false,
-  typeFilter1: 'all',
-  typeFilter2: 'all',
+  typeFilter1: 'all', // Default value have to be changed in Select.jsx too
+  typeFilter2: 'all', // Default value have to be changed in Select.jsx too
+  minWeightFilter: 0, // Default value have to be changed in Select.jsx too
+  maxWeightFilter: 500000, // Default value have to be changed in Select.jsx too
+  minHeightFilter: 0, // Default value have to be changed in Select.jsx too
+  maxHeightFilter: 500000, // Default value have to be changed in Select.jsx too
 };
 
 export const pokeReducer = (state = initialState, action) => {
@@ -42,10 +48,27 @@ export const pokeReducer = (state = initialState, action) => {
         ...state,
         typeFilter2: action.typeFilter2,
       };
+    case SET_WEIGHTFILTER:
+      return {
+        ...state,
+        minWeightFilter: +action.minWeightFilter,
+        maxWeightFilter: +action.maxWeightFilter,
+      };
+    case SET_HEIGHTFILTER:
+      return {
+        ...state,
+        minHeightFilter: +action.minHeightFilter,
+        maxHeightFilter: +action.maxHeightFilter,
+      };
     case CLEAR_SEARCHFILTER_LIST:
       return {
         ...state,
-        typeFilter1: null,
+        typeFilter1: 'all',
+        typeFilter2: 'all',
+        minWeightFilter: 0,
+        maxWeightFilter: 50000,
+        minHeightFilter: 0,
+        maxHeightFilter: 50000,
       };
     default:
       return {
@@ -72,6 +95,16 @@ export const setTypeFilter1 = (typeFilter1) => ({
 export const setTypeFilter2 = (typeFilter2) => ({
   type: SET_TYPEFILTER2,
   typeFilter2,
+});
+export const setWeightFilter = (minWeightFilter, maxWeightFilter) => ({
+  type: SET_WEIGHTFILTER,
+  minWeightFilter,
+  maxWeightFilter,
+});
+export const setHeightFilter = (minHeightFilter, maxHeightFilter) => ({
+  type: SET_HEIGHTFILTER,
+  minHeightFilter,
+  maxHeightFilter,
 });
 export const clearSearchFilter = () => ({
   type: CLEAR_SEARCHFILTER_LIST,
