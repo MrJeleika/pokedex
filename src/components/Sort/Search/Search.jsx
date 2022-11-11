@@ -13,11 +13,12 @@ export const Search = (props) => {
           name: '',
         }}
         onSubmit={(value, { resetForm }) => {
+          // Check empty value
           if (value.name === '') {
             setPokemonList(0, 50);
             return null;
           }
-          isFinite(+value.name)
+          isFinite(+value.name) // if num
             ? searchPokemonByName(+value.name)
             : searchPokemonByName(value.name.toLowerCase());
           resetForm();

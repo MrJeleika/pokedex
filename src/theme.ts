@@ -17,7 +17,7 @@ export const defaultTheme = {
       ghost: '#666ec6',
       steel: '#579fa5',
       fire: '#ffa84d',
-      water: "#67b4de",
+      water: "#059DC0",
       grass: "#5cc06a",
       electric: "#f6dd5f",
       psychic: "#f8908a",

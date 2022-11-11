@@ -14,6 +14,23 @@ export const APIgetPokemonNamesList = (from, to) => {
 
 export const APIgetPokemonByName = (pokemon) => {
   return instance.get(`pokemon/${pokemon}`).then((response) => {
+    return instance.get(`pokemon-species/${pokemon}`).then((response2) => {
+      return {
+        ...response.data,
+        ...response2.data,
+      };
+    });
+  });
+};
+
+export const APIgetPokemonSpecies = (pokemon) => {
+  return instance.get(`pokemon-species/${pokemon}`).then((response) => {
+    return response.data;
+  });
+};
+
+export const APIgetEvolutionChain = (pokemon) => {
+  return instance.get(`evolution-chain/${pokemon}`).then((response) => {
     return response.data;
   });
 };

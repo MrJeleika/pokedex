@@ -1,5 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Exo+2:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
-
+@import "~bootstrap/scss/bootstrap";
 .container{
   max-width: 1200px;
   margin: 0 auto;
@@ -11,7 +11,7 @@ body{
   height: 100vh; 
   overflow-x: hidden;
   line-height: 1 !important;
-  font-family: 'Exo 2';
+  font-family: 'Exo 2' !important;
   background: #f7f8fc !important; 
-  color:#050f28;
+  color:#050f28 !important;
 }

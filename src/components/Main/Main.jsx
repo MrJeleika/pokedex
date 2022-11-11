@@ -1,11 +1,11 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid, useDisclosure } from '@chakra-ui/react';
 import { Preloader } from 'common/Preloader';
 //Components
 import { MainCard } from './MainCard/MainCard';
 
 export const Main = (props) => {
-  const { state } = props;
-  console.log(props);
+  const { state, setPokemonSpeciesThunk } = props;
+
   return (
     <div className="container">
       {state.isFetching ? <Preloader /> : null}
@@ -13,19 +13,21 @@ export const Main = (props) => {
         {state.isFetching
           ? null
           : state.pokemonList
-              // Sort pokemons by number
+              // Sort by weight
               .filter((e) =>
                 e.weight / 10 >= state.minWeightFilter &&
                 e.weight / 10 < state.maxWeightFilter
                   ? e
                   : null,
               )
+              // Sort by height
               .filter((e) =>
                 e.height >= state.minHeightFilter &&
                 e.height < state.maxHeightFilter
                   ? e
                   : null,
               )
+              // Sort by 1 type
               .filter((e) => {
                 // if filter
                 if (state.typeFilter1 === 'all') {
@@ -45,6 +47,7 @@ export const Main = (props) => {
                 // default
                 return null;
               })
+              // Sort by 2 type
               .filter((e) => {
                 // if filter
                 if (state.typeFilter2 === 'all') {
@@ -75,9 +78,17 @@ export const Main = (props) => {
                 // default
                 return null;
               })
+              // Sort by number
               .sort((a, b) => a.id - b.id)
               .map((e, i) => {
-                return <MainCard pokemon={e} key={i} />;
+                return (
+                  <MainCard
+                    pokemon={e}
+                    key={i}
+                    setPokemonSpecies={setPokemonSpeciesThunk}
+                    {...props}
+                  />
+                );
               })}
       </SimpleGrid>
     </div>

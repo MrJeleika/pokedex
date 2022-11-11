@@ -1,4 +1,8 @@
-import { APIgetPokemonByName, APIgetPokemonNamesList } from 'api/api';
+import {
+  APIgetEvolutionChain,
+  APIgetPokemonByName,
+  APIgetPokemonNamesList,
+} from 'api/api';
 
 const SET_POKEMON_LIST = 'SET_POKEMON_LIST';
 const CLEAR_POKEMON_LIST = 'CLEAR_POKEMON_LIST';
@@ -8,9 +12,12 @@ const SET_TYPEFILTER2 = 'SET_TYPEFILTER2';
 const SET_WEIGHTFILTER = 'SET_WEIGHTFILTER';
 const SET_HEIGHTFILTER = 'SET_HEIGHTFILTER';
 const CLEAR_SEARCHFILTER_LIST = 'CLEAR_SEARCHFILTER_LIST';
+const SET_POKEMON_SPECIES = 'SET_POKEMON_SPECIES';
+const SET_EVOLUTION_CHAIN = 'SET_EVOLUTION_CHAIN';
 
 let initialState = {
   pokemon: [],
+  pokemonSpecies: {},
   pokemonList: [],
   isFetching: false,
   typeFilter1: 'all', // Default value have to be changed in Select.jsx too
@@ -19,6 +26,7 @@ let initialState = {
   maxWeightFilter: 500000, // Default value have to be changed in Select.jsx too
   minHeightFilter: 0, // Default value have to be changed in Select.jsx too
   maxHeightFilter: 500000, // Default value have to be changed in Select.jsx too
+  evolutionChain: {},
 };
 
 export const pokeReducer = (state = initialState, action) => {
@@ -70,6 +78,16 @@ export const pokeReducer = (state = initialState, action) => {
         minHeightFilter: 0,
         maxHeightFilter: 50000,
       };
+    case SET_POKEMON_SPECIES:
+      return {
+        ...state,
+        pokemonSpecies: action.pokemonSpecies,
+      };
+    case SET_EVOLUTION_CHAIN:
+      return {
+        ...state,
+        evolutionChain: action.evolutionChain,
+      };
     default:
       return {
         ...state,
@@ -109,6 +127,15 @@ export const setHeightFilter = (minHeightFilter, maxHeightFilter) => ({
 export const clearSearchFilter = () => ({
   type: CLEAR_SEARCHFILTER_LIST,
 });
+export const setPokemonSpecies = (pokemonSpecies) => ({
+  type: SET_POKEMON_SPECIES,
+  pokemonSpecies,
+});
+export const setEvolutionChain = (evolutionChain) => ({
+  type: SET_EVOLUTION_CHAIN,
+  evolutionChain,
+});
+
 export const setPokemonListThunk = (from, to) => {
   return async (dispatch) => {
     dispatch(setIsFetching(true));
@@ -117,7 +144,7 @@ export const setPokemonListThunk = (from, to) => {
     let response = await APIgetPokemonNamesList(from, to);
     const arr = await Promise.all(
       response.map((e) => {
-        return APIgetPokemonByName(e.name);
+        return APIgetPokemonByName(e.url.split('/')[6]); //get pokemon id from url
       }),
     );
     dispatch(setPokemonList(arr));
@@ -125,18 +152,28 @@ export const setPokemonListThunk = (from, to) => {
   };
 };
 
-export const searchPokemonByNameThunk = (name) => {
+export const searchPokemonByNameThunk = (pokemon) => {
   return async (dispatch) => {
     dispatch(setIsFetching(true));
     dispatch(clearPokemonList());
     dispatch(clearSearchFilter());
     try {
-      let response = await APIgetPokemonByName(name);
+      let response = await APIgetPokemonByName(pokemon);
+      console.log(response);
       dispatch(setPokemonList([response]));
     } catch (error) {
       // Clear pokemon list on API error
       dispatch(clearPokemonList());
     }
+    dispatch(setIsFetching(false));
+  };
+};
+
+export const setEvolutionChainThunk = (pokemon) => {
+  return async (dispatch) => {
+    dispatch(setIsFetching(true));
+    let response = await APIgetEvolutionChain(pokemon);
+    dispatch(setEvolutionChain(response));
     dispatch(setIsFetching(false));
   };
 };
