@@ -1,1 +1,1 @@
-Pokedex app builded using React, Redux, Chakra UI
+Pokedex app built using React, Redux, Chakra UI
