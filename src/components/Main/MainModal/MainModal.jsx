@@ -3,12 +3,13 @@ import { APIgetEvolutionChain, APIgetPokemonByName } from 'api/api';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { EvolutionDetails } from './EvolutionDetails/EvolutionDetails';
 //Styles
 import s from './MainModal.module.scss';
 export const MainModal = (props) => {
   const { show, setShow, pokemon } = props;
   const [evochain, setEvochain] = useState({});
-
+  console.log(pokemon);
   useEffect(() => {
     const getEvoChain = async () => {
       let a = await APIgetEvolutionChain(
@@ -16,12 +17,18 @@ export const MainModal = (props) => {
       );
       // Get img for evo chain
       let evo1, evo2, evo3;
+      evo2 = [];
+      evo3 = [];
       evo1 = await APIgetPokemonByName(a.chain.species.name);
-      if (a.chain.evolves_to[0]) {
-        evo2 = await APIgetPokemonByName(a.chain.evolves_to[0].species.name);
-        if (a.chain.evolves_to[0].evolves_to[0]) {
-          evo3 = await APIgetPokemonByName(
-            a.chain.evolves_to[0].evolves_to[0].species.name,
+      for (let i = 0; i < a.chain.evolves_to.length; i++) {
+        // looking for all evos and set it to evo2
+        evo2[i] = await APIgetPokemonByName(a.chain.evolves_to[i].species.name);
+        for (let k = 0; k < a.chain.evolves_to[i].evolves_to.length; k++) {
+          // looking for all evos and set it to evo3
+          evo3.push(
+            await APIgetPokemonByName(
+              a.chain.evolves_to[i].evolves_to[k].species.name,
+            ),
           );
         }
       }
@@ -35,9 +42,12 @@ export const MainModal = (props) => {
   return (
     <>
       <Modal
+        size="md"
         className={s.modal}
         dialogClassName={s.modal2}
         show={show}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
         onHide={handleClose}
       >
         <Modal.Header className={s.header} closeButton></Modal.Header>
@@ -172,65 +182,82 @@ export const MainModal = (props) => {
           <Text className={`${s.evolutionTitle} ${s.title}`}>Evolution</Text>
 
           {Object.keys(evochain).length !== 0 ? (
-            <Flex justifyContent="center">
-              <Box w="20%">
+            <Flex justifyContent="space-evenly">
+              <Flex w="25%" alignItems="center">
                 <Image
                   src={
                     evochain.evo1.sprites.other['official-artwork']
                       .front_default
                   }
                 />
-              </Box>
+              </Flex>
               {/* Check if 2nd evolution exist */}
-              {evochain.evo2 ? (
+              {evochain.evo2[0] ? (
                 <>
                   <Box
-                    w="20%"
+                    w="12.5%"
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
                   >
                     <Text className={s.evochainText}>
-                      lvl{' '}
-                      {
-                        evochain.chain.evolves_to[0].evolution_details[0]
-                          .min_level
-                      }
+                      <Text className={s.evochainText}>{'>'}</Text>
                     </Text>
                   </Box>
-                  <Box w="20%">
-                    <Image
-                      src={
-                        evochain.evo2.sprites.other['official-artwork']
-                          .front_default
-                      }
-                    />
-                  </Box>
+                  <Flex
+                    w="25%"
+                    justifyContent="center"
+                    flexDirection="column"
+                    flexWrap="wrap"
+                  >
+                    {evochain.evo2.map((evo2Pokemon) => {
+                      return (
+                        <>
+                          <Flex alignItems="center">
+                            <Image
+                              src={
+                                evo2Pokemon.sprites.other['official-artwork']
+                                  .front_default
+                              }
+                            />
+                          </Flex>
+                        </>
+                      );
+                    })}
+                  </Flex>
                   {/* Check if 3rd evolution exist */}
-                  {evochain.evo3 ? (
+                  {evochain.evo3.length > 0 ? (
                     <>
                       <Box
-                        w="20%"
+                        w="12.5%"
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
                       >
-                        <Text className={s.evochainText}>
-                          lvl{' '}
-                          {
-                            evochain.chain.evolves_to[0].evolves_to[0]
-                              .evolution_details[0].min_level
-                          }
-                        </Text>
+                        <Text className={s.evochainText}>{'>'}</Text>
                       </Box>
-                      <Box w="20%">
-                        <Image
-                          src={
-                            evochain.evo3.sprites.other['official-artwork']
-                              .front_default
-                          }
-                        />
-                      </Box>
+                      <Flex
+                        w="25%"
+                        flexDirection="column"
+                        justifyContent="center"
+                        flexWrap="wrap"
+                      >
+                        {evochain.evo3.map((evo3Pokemon) => {
+                          return (
+                            <>
+                              <Flex alignItems="center">
+                                <Image
+                                  src={
+                                    evo3Pokemon.sprites.other[
+                                      'official-artwork'
+                                    ].front_default
+                                  }
+                                />
+                              </Flex>
+                            </>
+                          );
+                        })}
+                      </Flex>
                     </>
                   ) : null}
                 </>

@@ -1,6 +1,10 @@
 .modal{
-  margin-top: 100px;
+
   &2{
+    min-width: 70% !important;
+    @media (min-width: 768px) {
+      min-width: 600px !important;
+    }
     padding: 10px;
   }
 }
@@ -102,4 +106,5 @@
 }
 .evochainText{
   color: rgb(124, 124, 124);
+  font-size: 44px;
 }
