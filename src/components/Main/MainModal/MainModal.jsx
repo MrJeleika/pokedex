@@ -1,13 +1,14 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
-import { APIgetEvolutionChain, APIgetPokemonByName } from 'api/api';
 import { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { EvolutionDetails } from './EvolutionDetails/EvolutionDetails';
 //Styles
 import s from './MainModal.module.scss';
+//Misc
+import Modal from 'react-bootstrap/Modal';
+import { APIgetEvolutionChain, APIgetPokemonByName } from 'api/api';
+
 export const MainModal = (props) => {
-  const { show, setShow, pokemon } = props;
+  const { show, setShow } = props;
+  const [pokemon, setPokemon] = useState(props.pokemon);
   const [evochain, setEvochain] = useState({});
   console.log(pokemon);
   useEffect(() => {
@@ -37,6 +38,13 @@ export const MainModal = (props) => {
     };
     getEvoChain();
   }, []);
+  // set default pokemon on modal close
+  useEffect(() => {
+    setTimeout(() => {
+      setPokemon(props.pokemon);
+    }, 100);
+  }, [show]);
+
   console.log(evochain);
   const handleClose = () => setShow(false);
   return (
@@ -180,16 +188,24 @@ export const MainModal = (props) => {
           </Flex>
 
           <Text className={`${s.evolutionTitle} ${s.title}`}>Evolution</Text>
-
+          {/* Check if evochain exist */}
           {Object.keys(evochain).length !== 0 ? (
             <Flex justifyContent="space-evenly">
-              <Flex w="25%" alignItems="center">
+              <Flex
+                w="25%"
+                cursor="pointer"
+                alignItems="center"
+                justifyContent="center"
+                onClick={() => setPokemon(evochain.evo1)}
+                flexDirection="column"
+              >
                 <Image
                   src={
                     evochain.evo1.sprites.other['official-artwork']
                       .front_default
                   }
                 />
+                <Text className={s.evochainName}>{evochain.evo1.name}</Text>
               </Flex>
               {/* Check if 2nd evolution exist */}
               {evochain.evo2[0] ? (
@@ -210,16 +226,26 @@ export const MainModal = (props) => {
                     flexDirection="column"
                     flexWrap="wrap"
                   >
-                    {evochain.evo2.map((evo2Pokemon) => {
+                    {evochain.evo2.map((evo2Pokemon, i) => {
                       return (
                         <>
-                          <Flex alignItems="center">
+                          <Flex
+                            key={i}
+                            alignItems="center"
+                            cursor="pointer"
+                            justifyContent="center"
+                            flexDirection="column"
+                            onClick={() => setPokemon(evo2Pokemon)}
+                          >
                             <Image
                               src={
                                 evo2Pokemon.sprites.other['official-artwork']
                                   .front_default
                               }
                             />
+                            <Text className={s.evochainName}>
+                              {evo2Pokemon.name}
+                            </Text>
                           </Flex>
                         </>
                       );
@@ -242,10 +268,17 @@ export const MainModal = (props) => {
                         justifyContent="center"
                         flexWrap="wrap"
                       >
-                        {evochain.evo3.map((evo3Pokemon) => {
+                        {evochain.evo3.map((evo3Pokemon, i) => {
                           return (
                             <>
-                              <Flex alignItems="center">
+                              <Flex
+                                key={i}
+                                cursor="pointer"
+                                alignItems="center"
+                                justifyContent="center"
+                                flexDirection="column"
+                                onClick={() => setPokemon(evo3Pokemon)}
+                              >
                                 <Image
                                   src={
                                     evo3Pokemon.sprites.other[
@@ -253,6 +286,9 @@ export const MainModal = (props) => {
                                     ].front_default
                                   }
                                 />
+                                <Text className={s.evochainName}>
+                                  {evo3Pokemon.name}
+                                </Text>
                               </Flex>
                             </>
                           );

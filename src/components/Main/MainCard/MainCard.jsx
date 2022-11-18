@@ -1,14 +1,13 @@
-import { Box, Text, useDisclosure } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Box, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 import { MainModal } from '../MainModal/MainModal';
-import Button from 'react-bootstrap/Button';
 // Styles
 import s from './MainCard.module.scss';
 
 export const MainCard = (props) => {
-  const { pokemon, setEvolutionChainThunk } = props;
+  const { pokemon } = props;
   const [show, setShow] = useState(false);
-  console.log();
+
   return (
     <>
       <div
@@ -56,8 +55,15 @@ export const MainCard = (props) => {
           </div>
         </div>
       </div>
-
-      <MainModal {...props} show={show} pokemon={pokemon} setShow={setShow} />
+      {show ? (
+        <MainModal
+          key={'1'}
+          {...props}
+          show={show}
+          pokemon={pokemon}
+          setShow={setShow}
+        />
+      ) : null}
     </>
   );
 };
