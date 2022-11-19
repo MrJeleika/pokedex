@@ -1,8 +1,9 @@
 import { Box, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { MainModal } from '../MainModal/MainModal';
 // Styles
 import s from './MainCard.module.scss';
+//Components
+import { MainModal } from '../MainModal/MainModal';
 
 export const MainCard = (props) => {
   const { pokemon } = props;

@@ -1,12 +1,21 @@
 // Misc
+import { Box } from '@chakra-ui/react';
 import { PreloaderSVG } from 'components/svgs/preloaderSVG';
 // Styles
 import s from './Preloader.module.scss';
 
-export const Preloader = () => {
+export const Preloader = ({ type }) => {
   return (
-    <div className={s.preloader}>
-      <PreloaderSVG />
-    </div>
+    <>
+      {type === 'evo' ? (
+        <Box className={s.preloaderEvo}>
+          <PreloaderSVG />
+        </Box>
+      ) : (
+        <Box className={s.preloader}>
+          <PreloaderSVG />
+        </Box>
+      )}
+    </>
   );
 };

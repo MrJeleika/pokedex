@@ -1,16 +1,20 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 //Styles
 import s from './MainModal.module.scss';
+//Components
+import { Stats } from './ModalComponents/Stats';
 //Misc
 import Modal from 'react-bootstrap/Modal';
 import { APIgetEvolutionChain, APIgetPokemonByName } from 'api/api';
+import { Parameters } from './ModalComponents/Parameters';
+import { EvoChain } from './ModalComponents/EvoChain';
 
 export const MainModal = (props) => {
   const { show, setShow } = props;
   const [pokemon, setPokemon] = useState(props.pokemon);
   const [evochain, setEvochain] = useState({});
-  console.log(pokemon);
+
   useEffect(() => {
     const getEvoChain = async () => {
       let a = await APIgetEvolutionChain(
@@ -45,8 +49,8 @@ export const MainModal = (props) => {
     }, 100);
   }, [show]);
 
-  console.log(evochain);
   const handleClose = () => setShow(false);
+
   return (
     <>
       <Modal
@@ -65,13 +69,13 @@ export const MainModal = (props) => {
             src={pokemon.sprites.other['official-artwork'].front_default}
             alt=""
           />
-          <div className={s.number}>#{pokemon.id}</div>
-          <div className={s.name}>
+          <Text className={s.number}>#{pokemon.id}</Text>
+          <Text className={s.name}>
             {/* Uppercase first letter */}
             {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-          </div>
+          </Text>
           {/* Types */}
-          <div className={s.types}>
+          <Box className={s.types}>
             {pokemon.types.map((type, i) => {
               return (
                 <Box
@@ -99,207 +103,21 @@ export const MainModal = (props) => {
                 </Box>
               );
             })}
-          </div>
+          </Box>
 
           <Text className={`${s.pokedexTitle} ${s.title}`}>Pokédex entry</Text>
           <Text className={s.pokedexText}>
             {pokemon.flavor_text_entries[1].flavor_text.replace('\f', ' ')}
           </Text>
 
-          <div className={s.parameters}>
-            <div className={s.parameter}>
-              <div className={`${s.parameterTitle} ${s.title}`}> Height</div>
-              <div className={s.parameterValue}> {pokemon.height / 10}m</div>
-            </div>
-            <div className={s.parameter}>
-              <div className={`${s.parameterTitle} ${s.title}`}> Weight</div>
-              <div className={s.parameterValue}>{pokemon.weight / 10}kg</div>
-            </div>
-            <div className={s.parameter}>
-              <div className={`${s.parameterTitle} ${s.title}`}>
-                {' '}
-                CAPTURE RATE
-              </div>
-              <div className={s.parameterValue}> {pokemon.capture_rate}</div>
-            </div>
-            <div className={s.parameter}>
-              <div className={`${s.parameterTitle} ${s.title}`}> BASE EXP</div>
-              <div className={s.parameterValue}>{pokemon.base_experience}</div>
-            </div>
-          </div>
+          <Parameters pokemon={pokemon} />
 
-          <div className={`${s.statsTitle} ${s.title}`}>Stats</div>
-          <Flex className={s.stats}>
-            <Flex className={s.stat}>
-              <Box className={s.statShape} background="fighting">
-                HP
-              </Box>
-              <Text className={s.statText}>{pokemon.stats[0].base_stat}</Text>
-            </Flex>
-            <Flex className={s.stat}>
-              <Box background="fire" className={s.statShape}>
-                ATK
-              </Box>
-              <Text className={s.statText}>{pokemon.stats[1].base_stat}</Text>
-            </Flex>
-            <Flex className={s.stat}>
-              <Box background="electric" className={s.statShape}>
-                DEF
-              </Box>
-              <Text className={s.statText}>{pokemon.stats[2].base_stat}</Text>
-            </Flex>
-            <Flex className={s.stat}>
-              <Box className={s.statShape} background="ice">
-                SPA
-              </Box>
-              <Text className={s.statText}>{pokemon.stats[3].base_stat}</Text>
-            </Flex>
-            <Flex className={s.stat}>
-              <Box className={s.statShape} background="grass">
-                SPO
-              </Box>
-              <Text className={s.statText}>{pokemon.stats[4].base_stat}</Text>
-            </Flex>
-            <Flex className={s.stat}>
-              <Box className={s.statShape} background="fairy">
-                SPD
-              </Box>
-              <Text className={s.statText}>{pokemon.stats[5].base_stat}</Text>
-            </Flex>
-            <Flex
-              background="#67b4de80"
-              borderRadius="20px"
-              flexDirection="column"
-              p="5px"
-              transform="translate(0, -5px)"
-            >
-              <Box className={s.statShape} background="water">
-                TOT
-              </Box>
-              <Text className={s.statText}>
-                {pokemon.stats[0].base_stat +
-                  pokemon.stats[1].base_stat +
-                  pokemon.stats[2].base_stat +
-                  pokemon.stats[3].base_stat +
-                  pokemon.stats[4].base_stat +
-                  pokemon.stats[5].base_stat}
-              </Text>
-            </Flex>
-          </Flex>
+          <Text className={`${s.statsTitle} ${s.title}`}>Stats</Text>
+          <Stats pokemon={pokemon} />
 
           <Text className={`${s.evolutionTitle} ${s.title}`}>Evolution</Text>
-          {/* Check if evochain exist */}
-          {Object.keys(evochain).length !== 0 ? (
-            <Flex justifyContent="space-evenly">
-              <Flex
-                w="25%"
-                cursor="pointer"
-                alignItems="center"
-                justifyContent="center"
-                onClick={() => setPokemon(evochain.evo1)}
-                flexDirection="column"
-              >
-                <Image
-                  src={
-                    evochain.evo1.sprites.other['official-artwork']
-                      .front_default
-                  }
-                />
-                <Text className={s.evochainName}>{evochain.evo1.name}</Text>
-              </Flex>
-              {/* Check if 2nd evolution exist */}
-              {evochain.evo2[0] ? (
-                <>
-                  <Box
-                    w="12.5%"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Text className={s.evochainText}>
-                      <Text className={s.evochainText}>{'>'}</Text>
-                    </Text>
-                  </Box>
-                  <Flex
-                    w="25%"
-                    justifyContent="center"
-                    flexDirection="column"
-                    flexWrap="wrap"
-                  >
-                    {evochain.evo2.map((evo2Pokemon, i) => {
-                      return (
-                        <>
-                          <Flex
-                            key={i}
-                            alignItems="center"
-                            cursor="pointer"
-                            justifyContent="center"
-                            flexDirection="column"
-                            onClick={() => setPokemon(evo2Pokemon)}
-                          >
-                            <Image
-                              src={
-                                evo2Pokemon.sprites.other['official-artwork']
-                                  .front_default
-                              }
-                            />
-                            <Text className={s.evochainName}>
-                              {evo2Pokemon.name}
-                            </Text>
-                          </Flex>
-                        </>
-                      );
-                    })}
-                  </Flex>
-                  {/* Check if 3rd evolution exist */}
-                  {evochain.evo3.length > 0 ? (
-                    <>
-                      <Box
-                        w="12.5%"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        <Text className={s.evochainText}>{'>'}</Text>
-                      </Box>
-                      <Flex
-                        w="25%"
-                        flexDirection="column"
-                        justifyContent="center"
-                        flexWrap="wrap"
-                      >
-                        {evochain.evo3.map((evo3Pokemon, i) => {
-                          return (
-                            <>
-                              <Flex
-                                key={i}
-                                cursor="pointer"
-                                alignItems="center"
-                                justifyContent="center"
-                                flexDirection="column"
-                                onClick={() => setPokemon(evo3Pokemon)}
-                              >
-                                <Image
-                                  src={
-                                    evo3Pokemon.sprites.other[
-                                      'official-artwork'
-                                    ].front_default
-                                  }
-                                />
-                                <Text className={s.evochainName}>
-                                  {evo3Pokemon.name}
-                                </Text>
-                              </Flex>
-                            </>
-                          );
-                        })}
-                      </Flex>
-                    </>
-                  ) : null}
-                </>
-              ) : null}
-            </Flex>
-          ) : null}
+
+          <EvoChain evochain={evochain} setPokemon={setPokemon} />
         </Modal.Body>
       </Modal>
     </>

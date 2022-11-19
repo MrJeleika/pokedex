@@ -1,4 +1,4 @@
-import { SimpleGrid, useDisclosure } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import { Preloader } from 'common/Preloader';
 //Components
 import { MainCard } from './MainCard/MainCard';

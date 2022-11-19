@@ -2,14 +2,15 @@
 import s from './Options.module.scss';
 //Components
 import { SearchSVG } from 'components/svgs/searchSVG';
+import { SelectField } from './Select/Select';
 // Misc
 import { Field, Form, Formik } from 'formik';
 import { OptionsValidationSchema } from 'helpers/_validate';
-import { SelectField } from './Select/Select';
-
 import { Flex } from '@chakra-ui/react';
+
 export const Options = (props) => {
   const {
+    state,
     setPokemonList,
     setTypeFilter1,
     setTypeFilter2,
@@ -59,6 +60,7 @@ export const Options = (props) => {
                   id="from"
                   name="from"
                   type="text"
+                  placeholder="1"
                   className={
                     errors.from && touched.from
                       ? `${s.textField} ${s.error}`
@@ -72,6 +74,7 @@ export const Options = (props) => {
                   id="to"
                   name="to"
                   type="text"
+                  placeholder="898"
                   className={
                     errors.to && touched.to
                       ? `${s.textField} ${s.error}`
@@ -128,7 +131,11 @@ export const Options = (props) => {
                     id="height"
                     component={SelectField}
                   />
-                  <button type="submit" className={s.button}>
+                  <button
+                    type="submit"
+                    disabled={state.isFetching}
+                    className={s.button}
+                  >
                     <SearchSVG />
                   </button>
                 </Flex>
