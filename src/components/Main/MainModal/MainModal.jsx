@@ -14,7 +14,7 @@ export const MainModal = (props) => {
   const { show, setShow } = props;
   const [pokemon, setPokemon] = useState(props.pokemon);
   const [evochain, setEvochain] = useState({});
-
+  console.log(pokemon);
   useEffect(() => {
     const getEvoChain = async () => {
       let a = await APIgetEvolutionChain(
@@ -24,7 +24,11 @@ export const MainModal = (props) => {
       let evo1, evo2, evo3;
       evo2 = [];
       evo3 = [];
-      evo1 = await APIgetPokemonByName(a.chain.species.name);
+      try {
+        evo1 = await APIgetPokemonByName(a.chain.species.name);
+      } catch (e) {
+        evo1 = pokemon;
+      }
       for (let i = 0; i < a.chain.evolves_to.length; i++) {
         // looking for all evos and set it to evo2
         evo2[i] = await APIgetPokemonByName(a.chain.evolves_to[i].species.name);
