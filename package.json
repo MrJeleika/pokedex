@@ -1,8 +1,8 @@
 {
-  "name": "calculator",
+  "name": "pokedex",
   "version": "0.1.0",
   "homepage": "https://mrjeleika.github.io/pokedex",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@chakra-ui/react": "^2.3.6",
     "@emotion/react": "^11.10.4",
