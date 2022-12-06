@@ -14,9 +14,9 @@ const SET_HEIGHTFILTER = 'SET_HEIGHTFILTER';
 const CLEAR_SEARCHFILTER_LIST = 'CLEAR_SEARCHFILTER_LIST';
 const SET_POKEMON_SPECIES = 'SET_POKEMON_SPECIES';
 const SET_EVOLUTION_CHAIN = 'SET_EVOLUTION_CHAIN';
+const SET_ERROR_CODE = 'SET_ERROR_CODE';
 
 let initialState = {
-  pokemon: [],
   pokemonSpecies: {},
   pokemonList: [],
   isFetching: false,
@@ -27,6 +27,7 @@ let initialState = {
   minHeightFilter: 0, // Default value have to be changed in Select.jsx too
   maxHeightFilter: 500000, // Default value have to be changed in Select.jsx too
   evolutionChain: {},
+  errorCode: '',
 };
 
 export const pokeReducer = (state = initialState, action) => {
@@ -88,6 +89,11 @@ export const pokeReducer = (state = initialState, action) => {
         ...state,
         evolutionChain: action.evolutionChain,
       };
+    case SET_ERROR_CODE:
+      return {
+        ...state,
+        errorCode: action.errorCode,
+      };
     default:
       return {
         ...state,
@@ -135,6 +141,10 @@ export const setEvolutionChain = (evolutionChain) => ({
   type: SET_EVOLUTION_CHAIN,
   evolutionChain,
 });
+export const setErrorCode = (errorCode) => ({
+  type: SET_ERROR_CODE,
+  errorCode,
+});
 
 export const setPokemonListThunk = (from, to) => {
   return async (dispatch) => {
@@ -157,12 +167,13 @@ export const searchPokemonByNameThunk = (pokemon) => {
     dispatch(setIsFetching(true));
     dispatch(clearPokemonList());
     dispatch(clearSearchFilter());
+    dispatch(setErrorCode(''));
     try {
       let response = await APIgetPokemonByName(pokemon);
-      console.log(response);
       dispatch(setPokemonList([response]));
     } catch (error) {
       // Clear pokemon list on API error
+      dispatch(setErrorCode(error.response.status));
       dispatch(clearPokemonList());
     }
     dispatch(setIsFetching(false));

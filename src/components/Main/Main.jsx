@@ -1,5 +1,6 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 import { Preloader } from 'common/Preloader';
+import { useSelector } from 'react-redux';
 //Components
 import { MainCard } from './MainCard/MainCard';
 
@@ -9,6 +10,18 @@ export const Main = (props) => {
   return (
     <div className="container">
       {state.isFetching ? <Preloader /> : null}
+      {state.errorCode ? (
+        <Box
+          mt="50px"
+          w="100%"
+          h="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text fontSize="40px">Pokémon not found</Text>
+        </Box>
+      ) : null}
       <SimpleGrid spacing="25px" columns={[2, 3, 4]}>
         {state.isFetching
           ? null
